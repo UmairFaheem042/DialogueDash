@@ -80,7 +80,7 @@ const signUp = async (req, res) => {
       },
     });
   } catch (error) {
-    console.error("SignUp Error:", error);
+    console.log("error in SignUp controller: ", error.message);
     res.status(500).json({
       success: false,
       message: "Error!! while signing up User",
@@ -132,7 +132,7 @@ const signIn = async (req, res) => {
       },
     });
   } catch (error) {
-    console.error("SignIn Error:", error);
+    console.log("error in SignUp controller: ", error.message);
     res.status(500).json({
       success: false,
       message: "Error!! while signing in User",
@@ -148,6 +148,7 @@ const signOut = (req, res) => {
       message: "Sign Out Successfull!!",
     });
   } catch (error) {
+    console.log("error in SignOut controller: ", error.message);
     res.status(500).json({
       success: false,
       message: "Error while signing out User!!",
@@ -175,6 +176,7 @@ const updateProfile = async (req, res) => {
       user: updatedUser,
     });
   } catch (error) {
+    console.log("error in updateProfile controller: ", error.message);
     res.status(500).json({
       success: false,
       message: "Error while updating profile",
@@ -197,6 +199,7 @@ const checkAuth = async (req, res) => {
       user: req.user,
     });
   } catch (error) {
+    console.log("error in checkAuth controller: ", error.message);
     res.status(500).json({
       success: false,
       message: "Error while authenticated user",
