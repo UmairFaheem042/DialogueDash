@@ -17,7 +17,7 @@ app.use(cookieParser());
 app.use("/api/auth", authRouter);
 
 connectDB();
-// connectCloud();
+connectCloud();
 
 const PORT = process.env.PORT || 8000;
 app.listen(PORT, () => {
