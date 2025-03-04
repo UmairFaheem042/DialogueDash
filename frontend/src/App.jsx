@@ -1,6 +1,7 @@
 import React from "react";
 import { Route, Routes } from "react-router-dom";
 
+import ScrollToTop from "./components/ScrollToTop";
 import Header from "./components/Header";
 import HomePage from "./pages/HomePage";
 import SignUp from "./pages/SignUp";
@@ -12,6 +13,7 @@ import Footer from "./components/Footer";
 const App = () => {
   return (
     <div className="min-h-screen">
+      <ScrollToTop />
       <Header />
       <Routes>
         <Route path="/" element={<HomePage />} />

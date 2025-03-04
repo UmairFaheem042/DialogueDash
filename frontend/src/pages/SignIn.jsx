@@ -2,6 +2,7 @@ import React from "react";
 import { Link } from "react-router-dom";
 
 const SignIn = () => {
+  // window.scrollTo(0, 0);
   return (
     <div className="min-h-[calc(100vh-80px)] grid grid-cols-2">
       <section className="w-screen md:w-auto flex gap-4 flex-col items-center justify-center border-r border-gray-200">

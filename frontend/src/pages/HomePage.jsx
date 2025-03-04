@@ -3,6 +3,7 @@ import Mockup from "../assets/laptopMock.png";
 import { Link } from "react-router-dom";
 
 const HomePage = () => {
+  // window.scrollTo(0, 0);
   return (
     <div className="max-w-[1400px] mx-auto px-6 py-4 min-h-[calc(100vh-80px)] ">
       <div className="flex flex-col gap-6 items-center text-center  mt-10">
