@@ -19,7 +19,9 @@ const App = () => {
         <Route path="/sign-in" element={<SignIn />} />
         <Route path="/settings" element={<Settings />} />
         <Route path="/profile" element={<Profile />} />
+        {/* <Route path="/profile/:userId" element={<Profile />} /> */}
 
+        <Route path="/chats" element={<>All Chats</>} />
         <Route path="/notifications" element={<>All Notifications</>} />
         <Route path="/search" element={<>All Users Search</>} />
       </Routes>
