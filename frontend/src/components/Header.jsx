@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import logo from "../assets/complete-logo.png";
+import { useAuth } from "../context/AuthContext";
 
 const Header = () => {
-  const isLoggedIn = false;
+  const { user, loading } = useAuth();
   const themeJSX = (
     <label className="swap swap-rotate mr-4">
       <input type="checkbox" className="theme-controller" value="synthwave" />
@@ -28,15 +29,14 @@ const Header = () => {
 
   return (
     <header className="sticky top-0 z-10 backdrop-blur bg-white/10 border-b border-gray-300 ">
-      <nav className="max-w-[1400px] mx-auto flex items-center justify-between gap-2 h-20 px-6 py-4">
+      <nav className="max-w-[1600px] mx-auto flex items-center justify-between gap-2 h-20 px-6 py-4">
         <Link to={"/"} className="text-lg font-semibold">
-          {/* DialogDash */}
           <img src={logo} className="w-[200px]" alt="website logo" />
         </Link>
         <div className="flex items-center gap-2">
           {/* THEME */}
           {/* {themeJSX} */}
-          {!isLoggedIn && (
+          {!user && (
             <>
               <Link to={"/sign-up"} className="btn btn-soft btn-secondary">
                 Get Started
@@ -46,17 +46,17 @@ const Header = () => {
               </Link>
             </>
           )}
-          {isLoggedIn && (
+          {user && (
             <>
               <Link to={"/settings"} className="btn btn-soft btn-primary">
                 Settings
               </Link>
               <Link
-                to={"/profile"}
+                to={`/profile/${user?._id}`}
                 className="avatar avatar-online cursor-pointer ml-3"
               >
                 <div className="w-10 rounded-full">
-                  <img src="https://img.daisyui.com/images/stock/photo-1534528741775-53994a69daeb.webp" />
+                  <img src={user?.profilePic} alt="pfp" />
                 </div>
               </Link>
             </>

@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 const HomePage = () => {
   // window.scrollTo(0, 0);
   return (
-    <div className="max-w-[1400px] mx-auto px-6 py-4 min-h-[calc(100vh-80px)] ">
+    <div className="max-w-[1600px] mx-auto px-6 py-4 min-h-[calc(100vh-80px)] ">
       <div className="flex flex-col gap-6 items-center text-center  mt-10">
         <h1 className="text-4xl md:text-6xl font-normal md:leading-16">
           Send A Message To A <br /> Collegue or Friend

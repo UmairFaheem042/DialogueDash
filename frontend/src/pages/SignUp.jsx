@@ -1,15 +1,30 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 
 const SignUp = () => {
-  // window.scrollTo(0, 0);
+  const { signUp } = useAuth();
+
+  const [userData, setUserData] = useState({
+    fullName: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+    profilePice: "",
+  });
+
+  const handleSignUp = (e) => {
+    e.preventDefault();
+    signUp(userData);
+  };
+
   return (
-    <div className="min-h-[calc(100vh-80px)] grid grid-cols-2">
+    <div className="max-w-[1600px] mx-auto min-h-[calc(100vh-80px)] grid grid-cols-2">
       <section className="w-screen md:w-auto flex gap-4 flex-col items-center justify-center border-r border-gray-200">
         <h1 className="text-2xl font-thin">
           Get registered on <span className="font-semibold">DialogDash</span>
         </h1>
-        <form className="flex flex-col gap-4 w-[80%]">
+        <form onSubmit={handleSignUp} className="flex flex-col gap-4 w-[80%]">
           {/* fullName & profile pic*/}
           <div className="flex gap-4">
             <label className="input validator w-[60%]">
@@ -43,6 +58,11 @@ const SignUp = () => {
               id="pfp"
               type="file"
               className="file-input file-input-neutral flex-1"
+              required
+              value={userData.fullName}
+              onChange={(e) =>
+                setUserData({ ...userData, fullName: e.target.value })
+              }
             />
           </div>
 
@@ -65,7 +85,15 @@ const SignUp = () => {
                   <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
                 </g>
               </svg>
-              <input type="email" placeholder="mail@site.com" required />
+              <input
+                type="email"
+                placeholder="mail@site.com"
+                required
+                value={userData.email}
+                onChange={(e) =>
+                  setUserData({ ...userData, email: e.target.value })
+                }
+              />
             </label>
           </div>
 
@@ -97,7 +125,11 @@ const SignUp = () => {
                 type="password"
                 required
                 placeholder="Password"
-                minLength="6"
+                minLength="3"
+                value={userData.password}
+                onChange={(e) =>
+                  setUserData({ ...userData, password: e.target.value })
+                }
               />
             </label>
           </div>
@@ -130,7 +162,10 @@ const SignUp = () => {
                 type="password"
                 required
                 placeholder="Confirm Password"
-                minLength="6"
+                value={userData.confirmPassword}
+                onChange={(e) =>
+                  setUserData({ ...userData, confirmPassword: e.target.value })
+                }
               />
             </label>
           </div>

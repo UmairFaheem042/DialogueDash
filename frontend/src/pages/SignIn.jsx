@@ -1,16 +1,26 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 
 const SignIn = () => {
-  // window.scrollTo(0, 0);
+  const { signIn } = useAuth();
+  const [userData, setUserData] = useState({
+    email: "",
+    password: "",
+  });
+
+  const handleSignIn = (e) => {
+    e.preventDefault();
+    signIn(userData);
+  };
+
   return (
-    <div className="min-h-[calc(100vh-80px)] grid grid-cols-2">
+    <div className="max-w-[1600px] mx-auto min-h-[calc(100vh-80px)] grid grid-cols-2">
       <section className="w-screen md:w-auto flex gap-4 flex-col items-center justify-center border-r border-gray-200">
         <h1 className="text-2xl font-thin">
           Welcome back to <span className="font-semibold">DialogDash</span>
         </h1>
-        <form className="flex flex-col gap-4 w-[80%]">
-          {/* email */}
+        <form onSubmit={handleSignIn} className="flex flex-col gap-4 w-[80%]">
           <div>
             <label className="input validator w-full">
               <svg
@@ -29,11 +39,19 @@ const SignIn = () => {
                   <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
                 </g>
               </svg>
-              <input type="email" placeholder="mail@site.com" required />
+              <input
+                name="email"
+                type="email"
+                placeholder="mail@site.com"
+                value={userData.email}
+                onChange={(e) =>
+                  setUserData({ ...userData, email: e.target.value })
+                }
+                required
+              />
             </label>
           </div>
 
-          {/* password */}
           <div>
             <label className="input validator w-full">
               <svg
@@ -58,10 +76,15 @@ const SignIn = () => {
                 </g>
               </svg>
               <input
+                name="password"
                 type="password"
-                required
                 placeholder="Password"
-                minLength="6"
+                minLength="3"
+                value={userData.password}
+                onChange={(e) =>
+                  setUserData({ ...userData, password: e.target.value })
+                }
+                required
               />
             </label>
           </div>
