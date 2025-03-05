@@ -1,17 +1,46 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import { useAuthStore } from "../store/useAuthStore";
 
 const SignUp = () => {
-  // window.scrollTo(0, 0);
+  const { isSigningUp, signUp } = useAuthStore();
+  const [formData, setFormData] = useState({
+    fullName: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
+    profilePic: "",
+  });
+
+  const resetForm = () => {
+    setFormData({
+      fullName: "",
+      email: "",
+      password: "",
+      confirmPassword: "",
+      profilePic: "",
+    });
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    try {
+      signUp(formData);
+      resetForm();
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+
   return (
     <div className="min-h-[calc(100vh-80px)] grid grid-cols-2">
       <section className="w-screen md:w-auto flex gap-4 flex-col items-center justify-center border-r border-gray-200">
         <h1 className="text-2xl font-thin">
           Get registered on <span className="font-semibold">DialogDash</span>
         </h1>
-        <form className="flex flex-col gap-4 w-[80%]">
-          {/* fullName & profile pic*/}
+        <form onSubmit={handleSubmit} className="flex flex-col gap-4 w-[80%]">
           <div className="flex gap-4">
+            {/* fullName */}
             <label className="input validator w-[60%]">
               <svg
                 className="h-[1em] opacity-50"
@@ -33,17 +62,29 @@ const SignUp = () => {
                 type="input"
                 required
                 placeholder="Full Name"
-                // pattern="[A-Za-z][A-Za-z0-9\-]*"
                 minLength="3"
                 maxLength="40"
+                value={formData.fullName}
+                onChange={(e) =>
+                  setFormData({ ...formData, fullName: e.target.value })
+                }
               />
             </label>
 
-            <input
-              id="pfp"
-              type="file"
-              className="file-input file-input-neutral flex-1"
-            />
+            {/* pfp */}
+            <label className="input validator w-[60%]">
+              <input
+                id="pfp"
+                // type="file"
+                type="url"
+                placeholder="Enter Image URL"
+                // className="file-input file-input-neutral flex-1"
+                value={formData.profilePic}
+                onChange={(e) =>
+                  setFormData({ ...formData, profilePic: e.target.value })
+                }
+              />
+            </label>
           </div>
 
           {/* email */}
@@ -65,7 +106,15 @@ const SignUp = () => {
                   <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
                 </g>
               </svg>
-              <input type="email" placeholder="mail@site.com" required />
+              <input
+                type="email"
+                placeholder="mail@site.com"
+                value={formData.email}
+                onChange={(e) =>
+                  setFormData({ ...formData, email: e.target.value })
+                }
+                required
+              />
             </label>
           </div>
 
@@ -97,7 +146,11 @@ const SignUp = () => {
                 type="password"
                 required
                 placeholder="Password"
-                minLength="6"
+                minLength="5"
+                value={formData.password}
+                onChange={(e) =>
+                  setFormData({ ...formData, password: e.target.value })
+                }
               />
             </label>
           </div>
@@ -130,7 +183,11 @@ const SignUp = () => {
                 type="password"
                 required
                 placeholder="Confirm Password"
-                minLength="6"
+                minLength="5"
+                value={formData.confirmPassword}
+                onChange={(e) =>
+                  setFormData({ ...formData, confirmPassword: e.target.value })
+                }
               />
             </label>
           </div>
@@ -141,8 +198,11 @@ const SignUp = () => {
         </form>
         <p>
           Already have an account?{" "}
-          <Link to={"/sign-in"} className="font-semibold">
-            Sign In
+          <Link
+            to={"/sign-in"}
+            className={`font-semibold ${isSigningUp && "opacity-50"}`}
+          >
+            {isSigningUp ? "Signing Up" : "Sign In"}
           </Link>
         </p>
       </section>

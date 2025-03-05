@@ -1,15 +1,38 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import { useAuthStore } from "../store/useAuthStore";
 
 const SignIn = () => {
-  // window.scrollTo(0, 0);
+  const { signIn, isSigningIn } = useAuthStore();
+  const [formData, setFormData] = useState({
+    email: "",
+    password: "",
+  });
+
+  const resetForm = () => {
+    setFormData({
+      email: "",
+      password: "",
+    });
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    try {
+      signIn(formData);
+      resetForm();
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+
   return (
     <div className="min-h-[calc(100vh-80px)] grid grid-cols-2">
       <section className="w-screen md:w-auto flex gap-4 flex-col items-center justify-center border-r border-gray-200">
         <h1 className="text-2xl font-thin">
           Welcome back to <span className="font-semibold">DialogDash</span>
         </h1>
-        <form className="flex flex-col gap-4 w-[80%]">
+        <form onSubmit={handleSubmit} className="flex flex-col gap-4 w-[80%]">
           {/* email */}
           <div>
             <label className="input validator w-full">
@@ -29,7 +52,15 @@ const SignIn = () => {
                   <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
                 </g>
               </svg>
-              <input type="email" placeholder="mail@site.com" required />
+              <input
+                type="email"
+                placeholder="mail@site.com"
+                value={formData.email}
+                onChange={(e) =>
+                  setFormData({ ...formData, email: e.target.value })
+                }
+                required
+              />
             </label>
           </div>
 
@@ -61,7 +92,11 @@ const SignIn = () => {
                 type="password"
                 required
                 placeholder="Password"
-                minLength="6"
+                minLength="5"
+                value={formData.password}
+                onChange={(e) =>
+                  setFormData({ ...formData, password: e.target.value })
+                }
               />
             </label>
           </div>
