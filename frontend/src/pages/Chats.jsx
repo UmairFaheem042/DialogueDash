@@ -1,24 +1,46 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { useChatStore } from "../store/useChatStore";
+import Sidebar from "../components/Sidebar";
 
 const Chats = () => {
+  const { getUsers, getMessages, selectedUser, setSelectedUser } =
+    useChatStore();
+
+  useEffect(() => {
+    getMessages(selectedUser?._id);
+  }, [selectedUser?._id, getMessages]);
+
   return (
     <div className="max-w-[1600px] mx-auto  min-h-[calc(100vh-80px)] flex">
-      <aside className="border-r border-gray-200  w-[300px]">
-        <div className="flex items-center gap-4 bg-white px-6 py-4">
-          <img
-            src="https://plus.unsplash.com/premium_photo-1689530775582-83b8abdb5020?fm=jpg&q=60&w=3000&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MXx8cmFuZG9tJTIwcGVyc29ufGVufDB8fDB8fHww"
-            alt="pfg"
-            className="w-[50px] h-[50px] rounded-full object-cover"
-          />
-          <div className="flex flex-col">
-            <h1 className="font-medium line-clamp-1">Umair Faheem</h1>
-            <h4 className="text-sm font-thin line-clamp-1">
-              umairfaheem042@gmail.com
-            </h4>
+      <Sidebar />
+      <main className="flex-1 p-2">
+        {selectedUser && (
+          <div className="flex flex-col gap-2 h-[86vh]">
+            <div className="flex items-center justify-between bg-white rounded-lg p-2">
+              <div className="flex items-center gap-4">
+                <img
+                  src={selectedUser.profilePic}
+                  alt="pfp"
+                  className="size-10 object-cover rounded-full"
+                />
+                <div className="flex flex-col">
+                  <h1 className="text-xl font-semibold">
+                    {selectedUser.fullName}
+                  </h1>
+                  <h1 className="text-sm">Online</h1>
+                </div>
+              </div>
+              <button
+                className="cursor-pointer"
+                onClick={() => setSelectedUser(null)}
+              >
+                ❌
+              </button>
+            </div>
+            <div className="bg-white rounded-lg p-2 flex-1">Chat Here</div>
           </div>
-        </div>
-      </aside>
-      <main className="flex-1 bg-emerald-200 px-6 py-4">Chat Preview</main>
+        )}
+      </main>
     </div>
   );
 };
