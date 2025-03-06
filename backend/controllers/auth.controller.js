@@ -7,6 +7,7 @@ import { v2 as cloudinary } from "cloudinary";
 const signUp = async (req, res) => {
   try {
     const { fullName, email, password, confirmPassword, profilePic } = req.body;
+
     if (!fullName || !email || !password || !confirmPassword)
       return res.status(400).json({
         success: false,
@@ -160,21 +161,38 @@ const signOut = (req, res) => {
 const updateProfile = async (req, res) => {
   try {
     const { _id } = req.user;
-    const { profilePic } = req.body;
 
-    const uploadedPfp = await cloudinary.uploader.upload(profilePic);
+    const file = req.file;
+    if (!file) {
+      return res
+        .status(400)
+        .json({ success: false, message: "No file uploaded" });
+    }
 
-    const updatedUser = await User.findByIdAndUpdate(
-      _id,
-      { profilePic: uploadedPfp.secure_url },
-      { new: true }
-    );
+    cloudinary.uploader
+      .upload_stream({ folder: "profile_pictures" }, async (error, result) => {
+        if (error) {
+          return res.status(500).json({
+            success: false,
+            message: "Cloudinary Upload Failed",
+            error,
+          });
+        }
 
-    res.status(200).json({
-      success: true,
-      message: "Profile Updated Successfully!!",
-      user: updatedUser,
-    });
+        // Update user's profilePic in DB
+        const updatedUser = await User.findByIdAndUpdate(
+          _id,
+          { profilePic: result.secure_url },
+          { new: true }
+        );
+
+        res.status(200).json({
+          success: true,
+          message: "Profile Updated Successfully!!",
+          user: updatedUser,
+        });
+      })
+      .end(file.buffer);
   } catch (error) {
     console.log("error in updateProfile controller: ", error.message);
     res.status(500).json({
@@ -208,4 +226,28 @@ const checkAuth = async (req, res) => {
   }
 };
 
-export { signIn, signUp, signOut, updateProfile, checkAuth };
+const deleteAccount = async (req, res) => {
+  try {
+    const userId = req.user._id;
+    const isExising = await User.findById(userId);
+
+    if (!isExising)
+      return res.status(400).json({
+        success: false,
+        message: "User does not exist",
+      });
+
+    // await User.findByIdAndDelete(userId);
+
+    // also update message controller(optional) => if user deletes account then the chat in the other users account should remain but profilePic and all should become default
+  } catch (error) {
+    console.log("error in deleteAccount controller: ", error.message);
+    res.status(500).json({
+      success: false,
+      message: "Error while deleting account",
+      error: error.message,
+    });
+  }
+};
+
+export { signIn, signUp, signOut, updateProfile, checkAuth, deleteAccount };

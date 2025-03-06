@@ -38,7 +38,9 @@ export const useAuthStore = create((set) => ({
       toast.success("Sign Up successfull!!");
     } catch (error) {
       console.log(error.message);
-      toast.error(error.message);
+      toast.error(error.response.data.message);
+    } finally {
+      set({ isSigningUp: false });
     }
   },
 
@@ -54,8 +56,9 @@ export const useAuthStore = create((set) => ({
       toast.success("Sign In successfull!!");
     } catch (error) {
       console.log(error.message);
-      toast.error(error.message);
+      toast.error(error.response.data.message);
     } finally {
+      set({ isSigningIn: false });
       // setTimeout(() => {
       set({ isCheckingAuth: false });
       // }, 5000);
@@ -64,13 +67,42 @@ export const useAuthStore = create((set) => ({
 
   signOut: async (navigate) => {
     try {
-      const response = await axiosInstance.post("/auth/sign-out");
+      await axiosInstance.post("/auth/sign-out");
       toast.success("Sign Out Successful");
       set({ authUser: null });
       navigate("/sign-in");
     } catch (error) {
       console.log(error.message);
+      toast.error(error.response.data.message);
+    }
+  },
+
+  updateProfile: async (data) => {
+    set({ isUpdatingProfile: true });
+    try {
+      const response = await axiosInstance.put("/auth/update-profile", data);
+      console.log(response);
+      set({ authUser: response.data.user });
+      toast.success("Profile updated successfully!!");
+    } catch (error) {
+      console.log(error.message);
       toast.error(error.message);
+    } finally {
+      set({ isUpdatingProfile: false });
+    }
+  },
+
+  deleteAccount: async (id, navigate) => {
+    try {
+      console.log(id);
+
+      // sign-out + delete-account
+      await axiosInstance.post("/auth/sign-out");
+      set({ authUser: null });
+      navigate("/sign-in");
+      toast.success("Account Deleted Successfully");
+    } catch (error) {
+      console.log(error.message);
     }
   },
 }));

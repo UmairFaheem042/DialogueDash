@@ -1,15 +1,17 @@
 import React from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import logo from "../assets/complete-logo.png";
 import { useAuthStore } from "../store/useAuthStore";
 
 const Header = () => {
-  const { authUser, isCheckingAuth, signOut } = useAuthStore();
-  const navigate = useNavigate();
+  const { authUser, signOut, isUpdatingProfile } = useAuthStore();
 
-  const handleSignOut = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const handleSignOut = async () => {
     console.log("signing out");
-    signOut(navigate);
+    await signOut(navigate);
   };
 
   return (
@@ -37,16 +39,18 @@ const Header = () => {
               >
                 Sign Out
               </button>
-              <Link
-                to={`/profile/${authUser?.user?._id}`}
-                className="w-10 h-10 avatar avatar-online cursor-pointer ml-3"
-              >
-                <img
-                  src={authUser?.user?.profilePic}
-                  className="rounded-full"
-                  loading="lazy"
-                />
-              </Link>
+              {!location.pathname.startsWith("/profile") && (
+                <Link
+                  to={`/profile/${authUser?.user?._id}`}
+                  className="w-10 h-10 avatar avatar-online cursor-pointer ml-3"
+                >
+                  <img
+                    src={authUser?.user?.profilePic}
+                    className="rounded-full"
+                    loading="lazy"
+                  />
+                </Link>
+              )}
             </>
           )}
         </div>

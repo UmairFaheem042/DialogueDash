@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { useAuthStore } from "../store/useAuthStore";
 
 const SignIn = () => {
-  const { signIn, isSigningIn } = useAuthStore();
+  const { signIn } = useAuthStore();
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -16,10 +16,10 @@ const SignIn = () => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      signIn(formData);
+      await signIn(formData);
       resetForm();
     } catch (error) {
       console.log(error.message);

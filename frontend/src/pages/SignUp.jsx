@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { useAuthStore } from "../store/useAuthStore";
 
 const SignUp = () => {
-  const { isSigningUp, signUp } = useAuthStore();
+  const { signUp } = useAuthStore();
   const [formData, setFormData] = useState({
     fullName: "",
     email: "",
@@ -22,13 +22,13 @@ const SignUp = () => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+
     try {
-      signUp(formData);
-      resetForm();
+      await signUp(formData);
     } catch (error) {
-      console.log(error.message);
+      resetForm();
     }
   };
 
@@ -198,11 +198,8 @@ const SignUp = () => {
         </form>
         <p>
           Already have an account?{" "}
-          <Link
-            to={"/sign-in"}
-            className={`font-semibold ${isSigningUp && "opacity-50"}`}
-          >
-            {isSigningUp ? "Signing Up" : "Sign In"}
+          <Link to={"/sign-in"} className={`font-semibold `}>
+            Sign In
           </Link>
         </p>
       </section>
