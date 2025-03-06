@@ -6,7 +6,7 @@ import { v2 as cloudinary } from "cloudinary";
 
 const signUp = async (req, res) => {
   try {
-    const { fullName, email, password, confirmPassword, profilePic } = req.body;
+    const { fullName, email, password, confirmPassword } = req.body;
 
     if (!fullName || !email || !password || !confirmPassword)
       return res.status(400).json({
@@ -56,16 +56,17 @@ const signUp = async (req, res) => {
       });
     }
 
-    let pfp =
-      profilePic === ""
-        ? "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQADjfoADAlJPrsl_hiiOMeE-FBor-i6hEAVg&s"
-        : profilePic;
+    // let pfp =
+    //   profilePic === ""
+    //     ? "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQADjfoADAlJPrsl_hiiOMeE-FBor-i6hEAVg&s"
+    //     : profilePic;
 
     const createdUser = await User.create({
       fullName,
       email,
       password: hashedPassword,
-      profilePic: pfp,
+      profilePic:
+        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQADjfoADAlJPrsl_hiiOMeE-FBor-i6hEAVg&s",
     });
 
     generateJWTToken(createdUser._id, res);

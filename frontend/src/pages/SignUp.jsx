@@ -9,7 +9,6 @@ const SignUp = () => {
     email: "",
     password: "",
     confirmPassword: "",
-    profilePic: "",
   });
 
   const resetForm = () => {
@@ -18,17 +17,16 @@ const SignUp = () => {
       email: "",
       password: "",
       confirmPassword: "",
-      profilePic: "",
     });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     try {
       await signUp(formData);
-    } catch (error) {
       resetForm();
+    } catch (error) {
+      console.log(error.message);
     }
   };
 
@@ -39,9 +37,9 @@ const SignUp = () => {
           Get registered on <span className="font-semibold">DialogDash</span>
         </h1>
         <form onSubmit={handleSubmit} className="flex flex-col gap-4 w-[80%]">
-          <div className="flex gap-4">
-            {/* fullName */}
-            <label className="input validator w-[60%]">
+          {/* fullName */}
+          <div>
+            <label className="input validator w-full">
               <svg
                 className="h-[1em] opacity-50"
                 xmlns="http://www.w3.org/2000/svg"
@@ -67,21 +65,6 @@ const SignUp = () => {
                 value={formData.fullName}
                 onChange={(e) =>
                   setFormData({ ...formData, fullName: e.target.value })
-                }
-              />
-            </label>
-
-            {/* pfp */}
-            <label className="input validator w-[60%]">
-              <input
-                id="pfp"
-                // type="file"
-                type="url"
-                placeholder="Enter Image URL"
-                // className="file-input file-input-neutral flex-1"
-                value={formData.profilePic}
-                onChange={(e) =>
-                  setFormData({ ...formData, profilePic: e.target.value })
                 }
               />
             </label>

@@ -3,7 +3,6 @@ import Mockup from "../assets/laptopMock.png";
 import { Link } from "react-router-dom";
 
 const HomePage = () => {
-  // window.scrollTo(0, 0);
   return (
     <div className="max-w-[1600px] mx-auto px-6 py-4 min-h-[calc(100vh-80px)] ">
       <div className="flex flex-col gap-6 items-center text-center  mt-10">
@@ -14,10 +13,9 @@ const HomePage = () => {
           Straightforward, dependable, secure communication and <br /> free
           calls, accessible world wide
         </p>
-        <div className="mt-2 grid md:grid-cols-2 items-center gap-4">
-          <Link to={"/sign-in"} className="btn btn-dash btn-primary">Continue</Link>
-          <Link to={"/sign-up"} className="btn btn-primary">Create An Account</Link>
-        </div>
+        <Link to={"/sign-in"} className="btn btn-primary">
+          Get Started
+        </Link>
         <img src={Mockup} alt="" />
       </div>
     </div>

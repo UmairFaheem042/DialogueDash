@@ -4,15 +4,17 @@ import logo from "../assets/complete-logo.png";
 import { useAuthStore } from "../store/useAuthStore";
 
 const Header = () => {
-  const { authUser, signOut, isUpdatingProfile } = useAuthStore();
+  const { authUser, signOut } = useAuthStore();
 
-  const navigate = useNavigate();
   const location = useLocation();
+  const navigate = useNavigate();
 
   const handleSignOut = async () => {
     console.log("signing out");
     await signOut(navigate);
   };
+
+  // console.log();
 
   return (
     <header className="sticky top-0 z-10 backdrop-blur bg-white/10 border-b border-gray-300 ">
@@ -33,24 +35,30 @@ const Header = () => {
           )}
           {authUser && (
             <>
-              <button
-                onClick={handleSignOut}
-                className="btn btn-soft btn-primary"
-              >
+              {location.pathname.startsWith("/profile") ? (
+                <>
+                  <Link to={`/chats`} className="cursor-pointer">
+                    <button className="btn btn-soft btn-secondary">
+                      View Chats
+                    </button>
+                  </Link>
+                </>
+              ) : (
+                <>
+                  <Link
+                    to={`/profile/${authUser?.user?._id}`}
+                    className="cursor-pointer"
+                  >
+                    <button className="btn btn-soft btn-secondary">
+                      View Profile
+                    </button>
+                  </Link>
+                </>
+              )}
+
+              <button onClick={handleSignOut} className="btn btn-primary">
                 Sign Out
               </button>
-              {!location.pathname.startsWith("/profile") && (
-                <Link
-                  to={`/profile/${authUser?.user?._id}`}
-                  className="w-10 h-10 avatar avatar-online cursor-pointer ml-3"
-                >
-                  <img
-                    src={authUser?.user?.profilePic}
-                    className="rounded-full"
-                    loading="lazy"
-                  />
-                </Link>
-              )}
             </>
           )}
         </div>

@@ -19,9 +19,7 @@ export const useAuthStore = create((set) => ({
       console.log(error.message);
       set({ authUser: null });
     } finally {
-      // setTimeout(() => {
       set({ isCheckingAuth: false });
-      // }, 5000);
     }
   },
 
@@ -32,7 +30,7 @@ export const useAuthStore = create((set) => ({
         email: formData.email,
         password: formData.password,
         confirmPassword: formData.confirmPassword,
-        profilePice: formData.profilePice,
+        // profilePic: formData.profilePice,
       });
       set({ authUser: response.data.user });
       toast.success("Sign Up successfull!!");
@@ -59,9 +57,7 @@ export const useAuthStore = create((set) => ({
       toast.error(error.response.data.message);
     } finally {
       set({ isSigningIn: false });
-      // setTimeout(() => {
       set({ isCheckingAuth: false });
-      // }, 5000);
     }
   },
 
