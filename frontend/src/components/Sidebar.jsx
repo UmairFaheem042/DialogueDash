@@ -1,5 +1,7 @@
 import React, { useEffect } from "react";
 import { useChatStore } from "../store/useChatStore";
+import SidebarSkeleton from "./skeletons/SidebarSkeleton";
+import { Users } from "lucide-react";
 
 const Sidebar = () => {
   const { users, getUsers, selectedUser, isUsersLoading, setSelectedUser } =
@@ -11,12 +13,7 @@ const Sidebar = () => {
     getUsers();
   }, [getUsers]);
 
-  //   if (isUsersLoading)
-  //     return (
-  //       <div className="w-[300px] h-[90vh] flex items-center justify-center">
-  //         <span className="loading loading-infinity loading-xl"></span>
-  //       </div>
-  //     );
+  if (isUsersLoading) return <SidebarSkeleton />;
 
   return (
     <aside className="bg-white m-2 rounded-lg border-r border-gray-200  w-[300px] h-[86vh] overflow-y-auto">

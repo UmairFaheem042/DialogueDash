@@ -66,7 +66,7 @@ const App = () => {
           element={authUser ? <>All Users Search</> : <Navigate to={"/"} />}
         />
       </Routes>
-      <Footer />
+      {/* <Footer /> */}
       <Toaster />
     </div>
   );

@@ -2,6 +2,7 @@ import React from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import logo from "../assets/complete-logo.png";
 import { useAuthStore } from "../store/useAuthStore";
+import { MessageSquare } from "lucide-react";
 
 const Header = () => {
   const { authUser, signOut } = useAuthStore();
@@ -19,8 +20,9 @@ const Header = () => {
   return (
     <header className="sticky top-0 z-10 backdrop-blur bg-white/10 border-b border-gray-300 ">
       <nav className="max-w-[1600px] mx-auto flex items-center justify-between gap-2 h-20 px-6 py-4">
-        <Link to={"/"} className="text-lg font-semibold">
-          <img src={logo} className="w-[200px]" alt="website logo" />
+        <Link to={"/"} className="text-lg font-semibold flex items-center gap-2">
+          {/* <img src={logo} className="w-[200px]" alt="website logo" /> */}
+          <MessageSquare/> DialogDash
         </Link>
         <div className="flex items-center gap-2">
           {!authUser && (
