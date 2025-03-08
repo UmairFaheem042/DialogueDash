@@ -1,6 +1,5 @@
 import React from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
-import logo from "../assets/complete-logo.png";
 import { useAuthStore } from "../store/useAuthStore";
 import { MessageSquare } from "lucide-react";
 
@@ -15,7 +14,6 @@ const Header = () => {
     await signOut(navigate);
   };
 
-  // console.log();
 
   return (
     <header className="sticky top-0 z-10 backdrop-blur bg-white/10 border-b border-gray-300 ">

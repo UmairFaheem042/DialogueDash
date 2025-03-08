@@ -26,6 +26,7 @@ const App = () => {
         <span className="loading loading-infinity loading-xl"></span>
       </div>
     );
+
   return (
     <div className="min-h-screen">
       <ScrollToTop />

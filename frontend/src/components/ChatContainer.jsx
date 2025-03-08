@@ -9,14 +9,12 @@ const ChatContainer = () => {
   const { messages, getMessages, selectedUser } = useChatStore();
 
   const messageEndRef = useRef(null);
-  console.log(messages);
 
   useEffect(() => {
     if (messageEndRef.current) {
       messageEndRef.current.scrollIntoView({ behavior: "smooth" });
     }
   }, [messages]);
-
 
   useEffect(() => {
     // getMessages(selectedUser?._id);
@@ -29,9 +27,6 @@ const ChatContainer = () => {
     // unsubscribeFromMessages,
   ]);
 
-  console.log("Auth user: ", authUser);
-  console.log("Selected user: ", selectedUser?._id);
-  
   return (
     <div className="bg-white rounded-lg p-2 flex-1 flex flex-col overflow-y-auto">
       <div className="flex-1 overflow-y-auto p-4 space-y-4">

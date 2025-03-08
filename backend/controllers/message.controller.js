@@ -1,6 +1,8 @@
 import User from "../models/user.model.js";
 import Message from "../models/message.model.js";
 import { v2 as cloudinary } from "cloudinary";
+import mongoose from "mongoose";
+const { ObjectId } = mongoose.Types;
 
 const fetchAllUsers = async (req, res) => {
   try {
@@ -27,14 +29,31 @@ const fetchAllUsers = async (req, res) => {
 const getMessages = async (req, res) => {
   try {
     const { id: otherUserId } = req.params;
-    const myId = req.user._id;
+    const myId = req.user?._id;
+
+    if (!myId || !otherUserId) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid request, user ID is missing",
+      });
+    }
+
+    if (!ObjectId.isValid(myId) || !ObjectId.isValid(otherUserId)) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid user ID format",
+      });
+    }
+
+    const senderObjectId = new ObjectId(myId);
+    const receiverObjectId = new ObjectId(otherUserId);
+
     const messages = await Message.find({
       $or: [
-        { senderId: myId, receiverId: otherUserId },
-        { senderId: otherUserId, receiverId: myId },
+        { senderId: senderObjectId, receiverId: receiverObjectId },
+        { senderId: receiverObjectId, receiverId: senderObjectId },
       ],
-    }); // finding all messages in which either i am the user or receiver(params) is the user
-
+    });
     res.status(200).json({
       success: true,
       messages: "Messages fetched successfully",
