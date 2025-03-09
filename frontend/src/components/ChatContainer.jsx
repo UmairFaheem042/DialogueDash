@@ -6,26 +6,32 @@ import { formatMessageTime } from "../lib/utils";
 
 const ChatContainer = () => {
   const { authUser } = useAuthStore();
-  const { messages, getMessages, selectedUser } = useChatStore();
+  const {
+    messages,
+    getMessages,
+    selectedUser,
+    subscribeToMessages,
+    unsubscribeFromMessages,
+  } = useChatStore();
 
   const messageEndRef = useRef(null);
+
+  useEffect(() => {
+    // getMessages(selectedUser._id);
+    subscribeToMessages();
+    return () => unsubscribeFromMessages();
+  }, [
+    selectedUser._id,
+    getMessages,
+    subscribeToMessages,
+    unsubscribeFromMessages,
+  ]);
 
   useEffect(() => {
     if (messageEndRef.current) {
       messageEndRef.current.scrollIntoView({ behavior: "smooth" });
     }
   }, [messages]);
-
-  useEffect(() => {
-    // getMessages(selectedUser?._id);
-    // subscribeToMessages();
-    // return () => unsubscribeFromMessages();
-  }, [
-    selectedUser?._id,
-    getMessages,
-    // subscribeToMessages,
-    // unsubscribeFromMessages,
-  ]);
 
   return (
     <div className="bg-white rounded-lg p-2 flex-1 flex flex-col overflow-y-auto">

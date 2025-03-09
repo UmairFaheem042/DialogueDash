@@ -2,6 +2,7 @@ import User from "../models/user.model.js";
 import Message from "../models/message.model.js";
 import { v2 as cloudinary } from "cloudinary";
 import mongoose from "mongoose";
+import { getReceiverSocketId, io } from "../config/socket.js";
 const { ObjectId } = mongoose.Types;
 
 const fetchAllUsers = async (req, res) => {
@@ -96,7 +97,10 @@ const sendMessage = async (req, res) => {
       image: imageUrl,
     });
 
-    // realtime todo functionality => socket.io
+    const receiverSocketId = getReceiverSocketId(receiverId);
+    if (receiverSocketId) {
+      io.to(receiverSocketId).emit("newMessage", newMessage);
+    }
 
     res.status(201).json({
       success: true,
